@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PulseTrack
 
-## Getting Started
+> **Your competitor intelligence, at a glance. Monitor competitors 24/7, detect changes, and use AI to understand what it means for your business.**
 
-First, run the development server:
+## 📸 Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<!-- ADD SCREENSHOT HERE -->
+![PulseTrack Dashboard Placeholder]![alt text](image.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Automated Scraping Pipeline:** Track competitor pricing, homepages, feature lists, and changelogs automatically using ScrapingBee.
+- **AI-Powered Analysis:** Groq-powered AI instantly parses changes to explain what changed, why it matters, and how you should respond.
+- **Intelligent Activity Feed:** High, Medium, and Low urgency alerts categorized automatically to prevent noise.
+- **Visual Diff Viewer:** See the exact text additions and deletions across competitor website revisions.
+- **Magic Link & Passwordless Auth:** Seamless NextAuth integration with Google and Resend.
+- **Weekly Email Digests:** Automatically generated beautiful HTML reports summarizing competitor movements.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Tech Stack
 
-## Learn More
+| Category         | Technologies Used                                                                 |
+| ---------------- | --------------------------------------------------------------------------------- |
+| **Framework**    | Next.js 14 (App Router), React, TypeScript                                      |
+| **Styling**      | Tailwind CSS, Framer Motion, GSAP, Radix UI (shadcn/ui)                         |
+| **Database**     | PostgreSQL (Neon), Prisma ORM                                                     |
+| **Auth**         | NextAuth.js (Magic Links via Resend, Google OAuth, Credentials)                   |
+| **Background**   | Inngest (Cron jobs, async scraping queues)                                        |
+| **AI & Scraping**| Groq (Llama 3 / Mixtral for analysis), ScrapingBee (Bypassing anti-bot)           |
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Local Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/prerna020/pulsetrack.git
+   cd pulsetrack
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Set up Environment Variables:**
+   Copy the `.env.example` file to `.env` and fill in your keys:
+   ```bash
+   cp .env.example .env
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Sync the Database:**
+   Push the Prisma schema to your Neon database and generate the client:
+   ```bash
+   npx prisma db push
+   npx prisma generate
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. **Run the Development Server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 🏗 Architecture (Scraping Pipeline)
+
+1. **Trigger:** Inngest cron job triggers the `scrape-all-competitors` function daily.
+2. **Fetch:** ScrapingBee is used to fetch the raw HTML of the competitor's page, bypassing CAPTCHAs and proxies.
+3. **Parse:** Cheerio extracts the human-readable text from the HTML, stripping out scripts and styles.
+4. **Diff Detection:** The text is compared against the last known version using the `diff` library.
+5. **AI Analysis:** If a significant diff is found, Groq AI analyzes the raw diff to determine the urgency and business impact.
+6. **Notification:** The change is saved to the database and an email digest/dashboard alert is generated.
+
+## ☁️ Deploy to Vercel
+
+PulseTrack is optimized for Vercel. 
+
+1. Push your code to a GitHub repository.
+2. Import the project in Vercel.
+3. Vercel will automatically detect **Next.js**. The build command `prisma generate && next build` is already configured in `package.json`.
+4. Add all required Environment Variables (see below).
+5. Click **Deploy**.
+
+---
+*Built with modern web standards to keep you one step ahead.*
