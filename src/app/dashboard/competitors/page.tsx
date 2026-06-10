@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { ExternalLink, Plus, Trash2 } from "lucide-react";
+import { ExternalLink, Loader2, Plus, RefreshCw, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 import type { PageType } from "@/generated/prisma/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -140,6 +142,20 @@ export default function CompetitorsPage() {
     }
   }
 
+  function handleScrapeComplete(competitorId: string, now: string) {
+    setCompetitors((prev) =>
+      prev.map((c) =>
+        c.id === competitorId
+          ? {
+              ...c,
+              lastScrapedAt: now,
+              pages: c.pages.map((p) => ({ ...p, lastScrapedAt: now })),
+            }
+          : c
+      )
+    );
+  }
+
   return (
     <div>
       <div className="mb-8 flex items-center justify-between">
@@ -191,6 +207,7 @@ export default function CompetitorsPage() {
               competitor={competitor}
               onToggleActive={handleToggleActive}
               onDelete={handleDelete}
+              onScrapeComplete={handleScrapeComplete}
             />
           ))}
         </div>
@@ -283,11 +300,15 @@ function CompetitorCard({
   competitor,
   onToggleActive,
   onDelete,
+  onScrapeComplete,
 }: {
   competitor: Competitor;
   onToggleActive: (id: string, isActive: boolean) => void;
   onDelete: (id: string) => void;
+  onScrapeComplete: (competitorId: string, now: string) => void;
 }) {
+  const [isScraping, setIsScraping] = useState(false);
+
   const initials = competitor.name
     .split(" ")
     .map((w) => w[0])
@@ -303,11 +324,65 @@ function CompetitorCard({
       })
     : "Never";
 
+  const domain = competitor.website.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+  async function handleScrapeNow() {
+    if (isScraping || competitor.pages.length === 0) return;
+    setIsScraping(true);
+
+    const pageCount = competitor.pages.length;
+    const toastId = toast.loading(
+      `Scraping ${domain}… (${pageCount} ${pageCount === 1 ? "page" : "pages"})`
+    );
+
+    let successCount = 0;
+    const errors: string[] = [];
+
+    for (const page of competitor.pages) {
+      try {
+        const res = await fetch("/api/scrape", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ trackedPageId: page.id }),
+        });
+
+        if (res.ok) {
+          successCount++;
+        } else {
+          const data = await res.json().catch(() => ({}));
+          errors.push(data.error ?? `Failed (${page.pageType})`);
+        }
+      } catch {
+        errors.push(`Network error (${page.pageType})`);
+      }
+    }
+
+    setIsScraping(false);
+
+    if (errors.length === 0) {
+      const now = new Date().toISOString();
+      onScrapeComplete(competitor.id, now);
+      toast.success(
+        `✓ Scraped ${successCount} ${successCount === 1 ? "page" : "pages"} successfully`,
+        { id: toastId }
+      );
+    } else if (successCount > 0) {
+      const now = new Date().toISOString();
+      onScrapeComplete(competitor.id, now);
+      toast.warning(
+        `Scraped ${successCount}/${pageCount} pages — ${errors.length} failed`,
+        { id: toastId }
+      );
+    } else {
+      toast.error(`Scraping failed: ${errors[0]}`, { id: toastId });
+    }
+  }
+
   return (
     <Card className="glass-card border-black/8 shadow-none ring-0">
       <CardHeader className="flex flex-row items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <Avatar className="size-10 rounded-lg">
+        <div className="flex items-center gap-3 min-w-0">
+          <Avatar className="size-10 rounded-lg shrink-0">
             <AvatarImage
               src={competitor.logoUrl ?? undefined}
               alt={competitor.name}
@@ -316,9 +391,14 @@ function CompetitorCard({
               {initials}
             </AvatarFallback>
           </Avatar>
-          <div>
-            <CardTitle className="text-base text-[#0a0a0a]">
-              {competitor.name}
+          <div className="min-w-0">
+            <CardTitle className="text-base text-[#0a0a0a] truncate">
+              <Link
+                href={`/dashboard/competitors/${competitor.id}`}
+                className="hover:underline"
+              >
+                {competitor.name}
+              </Link>
             </CardTitle>
             <a
               href={competitor.website}
@@ -326,15 +406,15 @@ function CompetitorCard({
               rel="noopener noreferrer"
               className="mt-0.5 flex items-center gap-1 text-xs text-[#6b7280] hover:text-[#0a0a0a]"
             >
-              {competitor.website.replace(/^https?:\/\//, "")}
-              <ExternalLink className="size-3" />
+              {domain}
+              <ExternalLink className="size-3 shrink-0" />
             </a>
           </div>
         </div>
         <Button
           variant="ghost"
           size="icon-sm"
-          className="text-[#9ca3af] hover:text-red-600"
+          className="text-[#9ca3af] hover:text-red-600 shrink-0"
           onClick={() => onDelete(competitor.id)}
         >
           <Trash2 className="size-4" />
@@ -362,6 +442,22 @@ function CompetitorCard({
             }
           />
         </div>
+
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full gap-2 border-black/10 text-[#0a0a0a] hover:bg-black/5"
+          onClick={handleScrapeNow}
+          disabled={isScraping || competitor.pages.length === 0}
+          id={`scrape-btn-${competitor.id}`}
+        >
+          {isScraping ? (
+            <Loader2 className="size-3.5 animate-spin" />
+          ) : (
+            <RefreshCw className="size-3.5" />
+          )}
+          {isScraping ? "Scraping…" : "Scrape Now"}
+        </Button>
       </CardContent>
     </Card>
   );
