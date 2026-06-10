@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
+
 import { DashboardClient } from "@/app/dashboard/dashboard-client";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
+
+export const metadata: Metadata = {
+  title: "Dashboard — PulseTrack",
+  description: "Overview of your competitor intelligence: tracked changes, urgency scores, and activity feed.",
+};
+
 
 export default async function DashboardPage() {
   const session = await getSession();

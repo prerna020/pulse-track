@@ -20,6 +20,11 @@ model User {
   image         String?
   password      String?
 
+  // Notification preferences
+  emailDigestEnabled Boolean @default(true)
+  digestFrequency    String  @default("weekly")
+  slackWebhookUrl    String?
+
   accounts    Account[]
   sessions    Session[]
   competitors Competitor[]

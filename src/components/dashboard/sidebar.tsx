@@ -16,22 +16,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/competitors", label: "Competitors", icon: Users },
-  { href: "/dashboard/alerts", label: "Alerts", icon: Bell },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
-];
-
 interface SidebarProps {
   user: {
     name?: string | null;
     email?: string | null;
     image?: string | null;
   };
+  alertCount?: number;
 }
 
-export function Sidebar({ user }: SidebarProps) {
+export function Sidebar({ user, alertCount = 0 }: SidebarProps) {
   const pathname = usePathname();
 
   const initials =
@@ -43,6 +37,13 @@ export function Sidebar({ user }: SidebarProps) {
       .toUpperCase() ||
     user.email?.[0]?.toUpperCase() ||
     "?";
+
+  const navItems = [
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, badge: 0 },
+    { href: "/dashboard/competitors", label: "Competitors", icon: Users, badge: 0 },
+    { href: "/dashboard/alerts", label: "Alerts", icon: Bell, badge: alertCount },
+    { href: "/dashboard/settings", label: "Settings", icon: Settings, badge: 0 },
+  ];
 
   return (
     <aside className="flex h-screen w-[220px] shrink-0 flex-col border-r border-black/8 bg-white">
@@ -73,8 +74,20 @@ export function Sidebar({ user }: SidebarProps) {
                   : "text-[#6b7280] hover:bg-black/5 hover:text-[#0a0a0a]"
               )}
             >
-              <item.icon className="size-4" />
-              {item.label}
+              <item.icon className="size-4 shrink-0" />
+              <span className="flex-1">{item.label}</span>
+              {item.badge > 0 && (
+                <span
+                  className={cn(
+                    "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold",
+                    isActive
+                      ? "bg-white/20 text-white"
+                      : "bg-red-100 text-red-600"
+                  )}
+                >
+                  {item.badge > 99 ? "99+" : item.badge}
+                </span>
+              )}
             </Link>
           );
         })}
