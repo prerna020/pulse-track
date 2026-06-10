@@ -29,7 +29,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen">
       <Sidebar user={session.user} alertCount={alertCount} />
-      <main className="flex-1 bg-[#f9fafb] p-8">{children}</main>
+      <main className="flex-1 bg-[#f5f0e8] p-8">{children}</main>
     </div>
   );
 }

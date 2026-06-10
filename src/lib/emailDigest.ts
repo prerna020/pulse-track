@@ -69,15 +69,15 @@ async function generateExecutiveSummary(
 }
 
 const URGENCY_COLOR: Record<string, string> = {
-  HIGH: "#dc2626",
-  MEDIUM: "#d97706",
-  LOW: "#16a34a",
+  HIGH: "#a63d2f",
+  MEDIUM: "#c8956c",
+  LOW: "#6b7c3f",
 };
 
 const URGENCY_BG: Record<string, string> = {
-  HIGH: "#fef2f2",
-  MEDIUM: "#fffbeb",
-  LOW: "#f0fdf4",
+  HIGH: "#fdf0ee",
+  MEDIUM: "#fdf5f0",
+  LOW: "#f2f5ee",
 };
 
 function buildEmailHtml(params: {
@@ -92,30 +92,30 @@ function buildEmailHtml(params: {
     .map((change) => {
       const competitor = change.snapshot.trackedPage.competitor;
       const pageType = change.snapshot.trackedPage.pageType;
-      const color = URGENCY_COLOR[change.urgency] ?? "#6b7280";
-      const bg = URGENCY_BG[change.urgency] ?? "#f9fafb";
+      const color = URGENCY_COLOR[change.urgency] ?? "#5c4a32";
+      const bg = URGENCY_BG[change.urgency] ?? "#f5f0e8";
 
       const logoHtml = competitor.logoUrl
         ? `<img src="${competitor.logoUrl}" alt="${competitor.name}" width="32" height="32" style="border-radius:6px;object-fit:cover;" />`
-        : `<div style="width:32px;height:32px;background:#f3f4f6;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#374151;">${competitor.name.slice(0, 2).toUpperCase()}</div>`;
+        : `<div style="width:32px;height:32px;background:rgba(26,18,8,0.05);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#5c4a32;">${competitor.name.slice(0, 2).toUpperCase()}</div>`;
 
       return `
       <tr>
-        <td style="padding:16px;border-bottom:1px solid #f3f4f6;">
+        <td style="padding:16px;border-bottom:1px solid rgba(26,18,8,0.08);">
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
               <td width="40" valign="top">${logoHtml}</td>
               <td style="padding-left:12px;">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                  <span style="font-size:14px;font-weight:600;color:#111827;">${competitor.name}</span>
-                  <span style="font-size:11px;color:#6b7280;background:#f3f4f6;padding:2px 8px;border-radius:99px;">${pageType}</span>
+                  <span style="font-size:14px;font-weight:600;color:#1a1208;">${competitor.name}</span>
+                  <span style="font-size:11px;color:#5c4a32;background:rgba(26,18,8,0.05);padding:2px 8px;border-radius:99px;">${pageType}</span>
                   <span style="font-size:11px;font-weight:600;color:${color};background:${bg};padding:2px 8px;border-radius:99px;">${change.urgency}</span>
                 </div>
-                <p style="margin:0 0 6px;font-size:13px;color:#374151;line-height:1.5;">
+                <p style="margin:0 0 6px;font-size:13px;color:#5c4a32;line-height:1.5;">
                   ${change.aiAnalysis?.what_changed ?? "A change was detected on this page."}
                 </p>
-                <p style="margin:0;font-size:12px;color:#6b7280;">
-                  <strong style="color:#111827;">Action: </strong>${change.aiAnalysis?.recommended_action ?? "Review the change manually."}
+                <p style="margin:0;font-size:12px;color:#9c8570;">
+                  <strong style="color:#1a1208;">Action: </strong>${change.aiAnalysis?.recommended_action ?? "Review the change manually."}
                 </p>
               </td>
             </tr>
@@ -132,24 +132,24 @@ function buildEmailHtml(params: {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PulseTrack Weekly Digest</title>
 </head>
-<body style="margin:0;padding:0;background:#f9fafb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9fafb;padding:40px 20px;">
+<body style="margin:0;padding:0;background:#f5f0e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f0e8;padding:40px 20px;">
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
 
           <!-- Header -->
           <tr>
-            <td style="background:#0a0a0a;border-radius:12px 12px 0 0;padding:28px 32px;">
+            <td style="background:#1a1208;border-radius:12px 12px 0 0;padding:28px 32px;">
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td>
-                    <span style="font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">PulseTrack</span>
-                    <div style="margin-top:4px;font-size:13px;color:#9ca3af;">Weekly Competitor Intelligence</div>
+                    <span style="font-size:18px;font-weight:700;color:#f5f0e8;letter-spacing:-0.3px;">PulseTrack</span>
+                    <div style="margin-top:4px;font-size:13px;color:#9c8570;">Weekly Competitor Intelligence</div>
                   </td>
                   <td align="right">
-                    <span style="font-size:28px;font-weight:700;color:#ffffff;">${changeCount}</span>
-                    <div style="font-size:11px;color:#9ca3af;margin-top:2px;">changes this week</div>
+                    <span style="font-size:28px;font-weight:700;color:#f5f0e8;">${changeCount}</span>
+                    <div style="font-size:11px;color:#9c8570;margin-top:2px;">changes this week</div>
                   </td>
                 </tr>
               </table>
@@ -159,14 +159,14 @@ function buildEmailHtml(params: {
           <!-- Body -->
           <tr>
             <td style="background:#ffffff;padding:32px;">
-              <p style="margin:0 0 8px;font-size:15px;font-weight:600;color:#111827;">Hi ${userName},</p>
-              <p style="margin:0 0 24px;font-size:14px;color:#374151;line-height:1.7;">${summary}</p>
+              <p style="margin:0 0 8px;font-size:15px;font-weight:600;color:#1a1208;">Hi ${userName},</p>
+              <p style="margin:0 0 24px;font-size:14px;color:#5c4a32;line-height:1.7;">${summary}</p>
 
               <!-- Changes Table -->
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #f3f4f6;border-radius:8px;overflow:hidden;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(26,18,8,0.08);border-radius:8px;overflow:hidden;">
                 <thead>
                   <tr>
-                    <th style="background:#f9fafb;padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #f3f4f6;">
+                    <th style="background:rgba(26,18,8,0.02);padding:12px 16px;text-align:left;font-size:11px;font-weight:600;color:#5c4a32;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid rgba(26,18,8,0.08);">
                       Competitor Changes
                     </th>
                   </tr>
@@ -178,11 +178,11 @@ function buildEmailHtml(params: {
 
           <!-- Footer -->
           <tr>
-            <td style="background:#f9fafb;border-radius:0 0 12px 12px;padding:20px 32px;border-top:1px solid #f3f4f6;">
-              <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
+            <td style="background:#f5f0e8;border-radius:0 0 12px 12px;padding:20px 32px;border-top:1px solid rgba(26,18,8,0.08);">
+              <p style="margin:0;font-size:12px;color:#9c8570;text-align:center;">
                 You're receiving this because weekly digest is enabled on your PulseTrack account.<br>
-                <a href="#unsubscribe" style="color:#6b7280;text-decoration:underline;">Unsubscribe</a> · 
-                <a href="https://pulsetrack.app/dashboard/settings" style="color:#6b7280;text-decoration:underline;">Manage preferences</a>
+                <a href="#unsubscribe" style="color:#5c4a32;text-decoration:underline;">Unsubscribe</a> · 
+                <a href="https://pulsetrack.app/dashboard/settings" style="color:#5c4a32;text-decoration:underline;">Manage preferences</a>
               </p>
             </td>
           </tr>

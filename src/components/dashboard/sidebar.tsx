@@ -46,12 +46,12 @@ export function Sidebar({ user, alertCount = 0 }: SidebarProps) {
   ];
 
   return (
-    <aside className="flex h-screen w-[220px] shrink-0 flex-col border-r border-black/8 bg-white">
+    <aside className="flex h-screen w-[220px] shrink-0 flex-col border-r border-[rgba(26,18,8,0.1)] bg-[#ffffff]">
       <div className="flex items-center gap-2 px-5 py-6">
-        <div className="flex size-7 items-center justify-center rounded-md bg-[#0a0a0a]">
+        <div className="flex size-7 items-center justify-center rounded-md bg-[#1a1208]">
           <Radar className="size-4 text-white" />
         </div>
-        <span className="text-sm font-semibold tracking-tight text-[#0a0a0a]">
+        <span className="text-sm font-semibold tracking-tight text-[#1a1208]">
           PulseTrack
         </span>
       </div>
@@ -70,8 +70,8 @@ export function Sidebar({ user, alertCount = 0 }: SidebarProps) {
               className={cn(
                 "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-[#0a0a0a] text-white"
-                  : "text-[#6b7280] hover:bg-black/5 hover:text-[#0a0a0a]"
+                  ? "bg-[#1a1208] text-white"
+                  : "text-[#5c4a32] hover:bg-[rgba(26,18,8,0.05)] hover:text-[#1a1208]"
               )}
             >
               <item.icon className="size-4 shrink-0" />
@@ -82,7 +82,7 @@ export function Sidebar({ user, alertCount = 0 }: SidebarProps) {
                     "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-semibold",
                     isActive
                       ? "bg-white/20 text-white"
-                      : "bg-red-100 text-red-600"
+                      : "bg-[#fdf0ee] text-[#a63d2f]"
                   )}
                 >
                   {item.badge > 99 ? "99+" : item.badge}
@@ -93,25 +93,25 @@ export function Sidebar({ user, alertCount = 0 }: SidebarProps) {
         })}
       </nav>
 
-      <div className="border-t border-black/8 p-4">
+      <div className="border-t border-[rgba(26,18,8,0.1)] p-4">
         <div className="flex items-center gap-2.5">
           <Avatar className="size-8">
             <AvatarImage src={user.image ?? undefined} alt={user.name ?? ""} />
-            <AvatarFallback className="bg-black/5 text-xs text-[#0a0a0a]">
+            <AvatarFallback className="bg-[rgba(26,18,8,0.05)] text-xs text-[#1a1208]">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium text-[#0a0a0a]">
+            <p className="truncate text-sm font-medium text-[#1a1208]">
               {user.name ?? "User"}
             </p>
-            <p className="truncate text-xs text-[#9ca3af]">{user.email}</p>
+            <p className="truncate text-xs text-[#9c8570]">{user.email}</p>
           </div>
         </div>
         <Button
           variant="ghost"
           size="sm"
-          className="mt-3 w-full justify-start gap-2 text-[#6b7280] hover:text-[#0a0a0a]"
+          className="mt-3 w-full justify-start gap-2 text-[#5c4a32] hover:text-[#1a1208]"
           onClick={() => signOut({ callbackUrl: "/login" })}
         >
           <LogOut className="size-3.5" />

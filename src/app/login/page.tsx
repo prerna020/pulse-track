@@ -74,19 +74,19 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="dot-grid-bg flex min-h-screen items-center justify-center p-6">
+    <div className="noise-bg flex min-h-screen items-center justify-center p-6">
       <div className="glass-card w-full max-w-md p-8">
         <div className="mb-8 flex items-center gap-2.5">
-          <div className="flex size-9 items-center justify-center rounded-lg bg-[#0a0a0a]">
+          <div className="flex size-9 items-center justify-center rounded-lg bg-[#1a1208]">
             <Radar className="size-5 text-white" />
           </div>
-          <span className="text-xl font-semibold tracking-tight text-[#0a0a0a]">
+          <span className="text-xl font-semibold tracking-tight text-[#1a1208]">
             PulseTrack
           </span>
         </div>
 
-        <h1 className="text-2xl font-semibold text-[#0a0a0a]">Welcome back</h1>
-        <p className="mt-1.5 text-sm text-[#6b7280]">
+        <h1 className="text-2xl font-semibold text-[#1a1208]">Welcome back</h1>
+        <p className="mt-1.5 text-sm text-[#5c4a32]">
           Monitor competitors and never miss a move.
         </p>
 
@@ -94,7 +94,7 @@ export default function LoginPage() {
           <Button
             type="button"
             variant="outline"
-            className="h-11 w-full border-black/10 bg-white/80 text-[#0a0a0a] hover:bg-black/5"
+            className="h-11 w-full border-[rgba(26,18,8,0.1)] bg-white/80 text-[#1a1208] hover:bg-[rgba(26,18,8,0.05)]"
             onClick={handleGoogleSignIn}
             disabled={isLoading}
           >
@@ -104,29 +104,29 @@ export default function LoginPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-black/8" />
+              <span className="w-full border-t border-[rgba(26,18,8,0.08)]" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white/90 px-2 text-[#9ca3af]">or</span>
+              <span className="bg-white/90 px-2 text-[#9c8570]">or</span>
             </div>
           </div>
 
           {emailSent ? (
-            <div className="rounded-lg border border-black/8 bg-white/60 p-4 text-center">
-              <p className="text-sm font-medium text-[#0a0a0a]">
+            <div className="rounded-lg border border-[rgba(26,18,8,0.08)] bg-white/60 p-4 text-center">
+              <p className="text-sm font-medium text-[#1a1208]">
                 Check your inbox
               </p>
-              <p className="mt-1 text-sm text-[#6b7280]">
+              <p className="mt-1 text-sm text-[#5c4a32]">
                 We sent a magic link to <strong>{email}</strong>
               </p>
-              <p className="mt-2 text-xs text-[#9ca3af]">
+              <p className="mt-2 text-xs text-[#9c8570]">
                 (If running locally without RESEND_API_KEY, check your terminal for the link)
               </p>
             </div>
           ) : (
             <form onSubmit={handleEmailSignIn} className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-[#0a0a0a]">
+                <Label htmlFor="email" className="text-[#1a1208]">
                   Email address
                 </Label>
                 <Input
@@ -135,14 +135,14 @@ export default function LoginPage() {
                   placeholder="you@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-11 border-black/10 bg-white/80"
+                  className="h-11 border-[rgba(26,18,8,0.1)] bg-white/80"
                   required
                 />
               </div>
 
               {!useMagicLink && (
                 <div className="space-y-1.5">
-                  <Label htmlFor="password" className="text-[#0a0a0a]">
+                  <Label htmlFor="password" className="text-[#1a1208]">
                     Password
                   </Label>
                   <Input
@@ -151,21 +151,21 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-11 border-black/10 bg-white/80"
+                    className="h-11 border-[rgba(26,18,8,0.1)] bg-white/80"
                     required={!useMagicLink}
                   />
                 </div>
               )}
 
               {error && (
-                <div className="rounded-md bg-red-50 p-3 text-sm text-red-600 border border-red-100">
+                <div className="rounded-md bg-[#fdf0ee] p-3 text-sm text-[#a63d2f] border border-[#a63d2f]/20">
                   {error}
                 </div>
               )}
 
               <Button
                 type="submit"
-                className="h-11 w-full bg-[#0a0a0a] text-white hover:bg-[#0a0a0a]/90"
+                className="h-11 w-full bg-[#1a1208] text-white hover:bg-[#1a1208]/90"
                 disabled={isLoading}
               >
                 {isLoading 
@@ -180,7 +180,7 @@ export default function LoginPage() {
                     setUseMagicLink(!useMagicLink);
                     setError("");
                   }}
-                  className="text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
+                  className="text-sm text-[#5c4a32] hover:text-[#1a1208] transition-colors"
                 >
                   {useMagicLink 
                     ? "Prefer to sign in with a password?" 

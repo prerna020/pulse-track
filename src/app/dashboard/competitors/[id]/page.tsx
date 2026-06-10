@@ -62,7 +62,7 @@ export default async function CompetitorDetailPage({
       {/* Back navigation */}
       <Link
         href="/dashboard/competitors"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-[#5c4a32] hover:text-[#1a1208] transition-colors"
       >
         <ArrowLeft className="size-3.5" />
         Competitors
@@ -72,14 +72,14 @@ export default async function CompetitorDetailPage({
       <div className="glass-card mb-6 flex items-start gap-5 p-6">
         <Avatar className="size-16 rounded-xl shrink-0">
           <AvatarImage src={competitor.logoUrl ?? undefined} alt={competitor.name} />
-          <AvatarFallback className="rounded-xl bg-black/5 text-xl font-semibold text-[#0a0a0a]">
+          <AvatarFallback className="rounded-xl bg-[rgba(26,18,8,0.05)] text-xl font-semibold text-[#1a1208]">
             {initials}
           </AvatarFallback>
         </Avatar>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold text-[#0a0a0a]">
+            <h1 className="text-2xl font-semibold text-[#1a1208]">
               {competitor.name}
             </h1>
             <Badge
@@ -98,7 +98,7 @@ export default async function CompetitorDetailPage({
             href={competitor.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 inline-flex items-center gap-1.5 text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
+            className="mt-1 inline-flex items-center gap-1.5 text-sm text-[#5c4a32] hover:text-[#1a1208] transition-colors"
           >
             <Globe className="size-3.5" />
             {domain}
@@ -127,13 +127,13 @@ export default async function CompetitorDetailPage({
 
       {/* Tracked Pages */}
       <div>
-        <h2 className="mb-3 text-base font-semibold text-[#0a0a0a]">
+        <h2 className="mb-3 text-base font-semibold text-[#1a1208]">
           Tracked Pages
         </h2>
 
         {competitor.pages.length === 0 ? (
           <div className="glass-card py-12 text-center">
-            <p className="text-sm text-[#6b7280]">No pages configured.</p>
+            <p className="text-sm text-[#5c4a32]">No pages configured.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -156,10 +156,10 @@ export default async function CompetitorDetailPage({
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded-md bg-black/5 px-2 py-0.5 text-xs font-medium text-[#0a0a0a]">
+                      <span className="rounded-md bg-[rgba(26,18,8,0.05)] px-2 py-0.5 text-xs font-medium text-[#1a1208]">
                         {PAGE_TYPE_LABELS[page.pageType]}
                       </span>
-                      <span className="text-xs text-[#9ca3af]">
+                      <span className="text-xs text-[#9c8570]">
                         {page._count.snapshots}{" "}
                         {page._count.snapshots === 1 ? "snapshot" : "snapshots"}
                       </span>
@@ -169,13 +169,13 @@ export default async function CompetitorDetailPage({
                       href={page.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 flex items-center gap-1 text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors truncate"
+                      className="mt-1 flex items-center gap-1 text-sm text-[#5c4a32] hover:text-[#1a1208] transition-colors truncate"
                     >
                       {page.url}
                       <ExternalLink className="size-3 shrink-0" />
                     </a>
 
-                    <p className="mt-1 text-xs text-[#9ca3af]">
+                    <p className="mt-1 text-xs text-[#9c8570]">
                       {lastSnapshotDate
                         ? `Last snapshot: ${lastSnapshotDate}`
                         : "Never scraped"}
@@ -200,8 +200,8 @@ export default async function CompetitorDetailPage({
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
     <div>
-      <p className="text-xs text-[#9ca3af]">{label}</p>
-      <p className="mt-0.5 text-sm font-medium capitalize text-[#0a0a0a]">
+      <p className="text-xs text-[#9c8570]">{label}</p>
+      <p className="mt-0.5 text-sm font-medium capitalize text-[#1a1208]">
         {value}
       </p>
     </div>

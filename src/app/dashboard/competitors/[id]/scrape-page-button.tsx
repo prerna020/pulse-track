@@ -61,7 +61,7 @@ export function ScrapePageButton({
       onClick={handleScrape}
       disabled={isScraping}
       id={`scrape-page-${trackedPageId}`}
-      className="gap-2 shrink-0 border-black/10 text-[#0a0a0a] hover:bg-black/5"
+      className="gap-2 shrink-0 border-[rgba(26,18,8,0.1)] text-[#1a1208] hover:bg-[rgba(26,18,8,0.05)]"
     >
       {isScraping ? (
         <Loader2 className="size-3.5 animate-spin" />

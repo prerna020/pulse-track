@@ -24,12 +24,12 @@ interface UserPrefs {
 }
 
 const SECTION_CLASS =
-  "glass-card divide-y divide-black/8 overflow-hidden";
+  "glass-card divide-y divide-[rgba(26,18,8,0.08)] overflow-hidden";
 const SECTION_HEADER_CLASS =
-  "flex items-center gap-2.5 px-6 py-4 bg-black/[0.02]";
+  "flex items-center gap-2.5 px-6 py-4 bg-[rgba(26,18,8,0.02)]";
 const ROW_CLASS = "flex items-center justify-between gap-6 px-6 py-4";
-const LABEL_CLASS = "text-sm font-medium text-[#0a0a0a]";
-const SUBLABEL_CLASS = "mt-0.5 text-xs text-[#9ca3af]";
+const LABEL_CLASS = "text-sm font-medium text-[#1a1208]";
+const SUBLABEL_CLASS = "mt-0.5 text-xs text-[#9c8570]";
 
 export function SettingsClient({
   user,
@@ -137,8 +137,8 @@ export function SettingsClient({
     <div className="mx-auto max-w-2xl space-y-6">
       {/* Page header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#0a0a0a]">Settings</h1>
-        <p className="mt-1 text-sm text-[#6b7280]">
+        <h1 className="text-2xl font-semibold text-[#1a1208]">Settings</h1>
+        <p className="mt-1 text-sm text-[#5c4a32]">
           Manage your profile and notification preferences
         </p>
       </div>
@@ -146,26 +146,26 @@ export function SettingsClient({
       {/* ─── Profile ─────────────────────────────────────────── */}
       <div className={SECTION_CLASS}>
         <div className={SECTION_HEADER_CLASS}>
-          <User className="size-4 text-[#6b7280]" />
-          <span className="text-sm font-semibold text-[#0a0a0a]">Profile</span>
+          <User className="size-4 text-[#5c4a32]" />
+          <span className="text-sm font-semibold text-[#1a1208]">Profile</span>
         </div>
 
         <div className={ROW_CLASS}>
           <div className="flex items-center gap-4">
             <Avatar className="size-14 rounded-xl">
               <AvatarImage src={user.image ?? undefined} alt={user.name ?? ""} />
-              <AvatarFallback className="rounded-xl bg-black/5 text-lg font-medium text-[#0a0a0a]">
+              <AvatarFallback className="rounded-xl bg-[rgba(26,18,8,0.05)] text-lg font-medium text-[#1a1208]">
                 {initials}
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="text-sm font-semibold text-[#0a0a0a]">
+              <p className="text-sm font-semibold text-[#1a1208]">
                 {user.name ?? "—"}
               </p>
-              <p className="text-sm text-[#9ca3af]">{user.email ?? "—"}</p>
+              <p className="text-sm text-[#9c8570]">{user.email ?? "—"}</p>
             </div>
           </div>
-          <span className="rounded-md bg-black/5 px-2.5 py-1 text-xs text-[#6b7280]">
+          <span className="rounded-md bg-[rgba(26,18,8,0.05)] px-2.5 py-1 text-xs text-[#5c4a32]">
             Read-only
           </span>
         </div>
@@ -174,8 +174,8 @@ export function SettingsClient({
       {/* ─── Notifications ───────────────────────────────────── */}
       <div className={SECTION_CLASS}>
         <div className={SECTION_HEADER_CLASS}>
-          <Settings className="size-4 text-[#6b7280]" />
-          <span className="text-sm font-semibold text-[#0a0a0a]">
+          <Settings className="size-4 text-[#5c4a32]" />
+          <span className="text-sm font-semibold text-[#1a1208]">
             Notifications
           </span>
         </div>
@@ -183,8 +183,8 @@ export function SettingsClient({
         {/* Email digest toggle */}
         <div className={ROW_CLASS}>
           <div className="flex items-center gap-3">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-black/5">
-              <Mail className="size-4 text-[#6b7280]" />
+            <div className="flex size-8 items-center justify-center rounded-lg bg-[rgba(26,18,8,0.05)]">
+              <Mail className="size-4 text-[#5c4a32]" />
             </div>
             <div>
               <p className={LABEL_CLASS}>Email digest</p>
@@ -218,7 +218,7 @@ export function SettingsClient({
               value={prefs.digestFrequency}
               onChange={(e) => handleFrequencyChange(e.target.value)}
               disabled={isSaving === "digestFrequency"}
-              className="rounded-lg border border-black/10 bg-white px-3 py-1.5 text-sm text-[#0a0a0a] focus:outline-none focus:ring-2 focus:ring-black/10"
+              className="rounded-lg border border-[rgba(26,18,8,0.1)] bg-white px-3 py-1.5 text-sm text-[#1a1208] focus:outline-none focus:ring-2 focus:ring-[rgba(26,18,8,0.1)]"
             >
               <option value="weekly">Weekly (Mondays)</option>
               <option value="daily">Daily (9am)</option>
@@ -229,8 +229,8 @@ export function SettingsClient({
         {/* Slack webhook */}
         <div className={ROW_CLASS}>
           <div className="flex items-center gap-3">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-black/5">
-              <Link2 className="size-4 text-[#6b7280]" />
+            <div className="flex size-8 items-center justify-center rounded-lg bg-[rgba(26,18,8,0.05)]">
+              <Link2 className="size-4 text-[#5c4a32]" />
             </div>
             <div>
               <p className={LABEL_CLASS}>Slack webhook URL</p>
@@ -246,12 +246,12 @@ export function SettingsClient({
             placeholder="https://hooks.slack.com/services/…"
             value={slackInput}
             onChange={(e) => setSlackInput(e.target.value)}
-            className="border-black/10 bg-white/80 text-sm"
+            className="border-[rgba(26,18,8,0.1)] bg-white/80 text-sm"
           />
           <Button
             variant="outline"
             size="sm"
-            className="shrink-0 border-black/10 text-[#0a0a0a] hover:bg-black/5"
+            className="shrink-0 border-[rgba(26,18,8,0.1)] text-[#1a1208] hover:bg-[rgba(26,18,8,0.05)]"
             onClick={handleSlackSave}
             disabled={isSaving === "slackWebhook"}
           >
@@ -266,8 +266,8 @@ export function SettingsClient({
         {/* Test digest */}
         <div className={ROW_CLASS}>
           <div className="flex items-center gap-3">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-black/5">
-              <Send className="size-4 text-[#6b7280]" />
+            <div className="flex size-8 items-center justify-center rounded-lg bg-[rgba(26,18,8,0.05)]">
+              <Send className="size-4 text-[#5c4a32]" />
             </div>
             <div>
               <p className={LABEL_CLASS}>Send test digest</p>
@@ -280,7 +280,7 @@ export function SettingsClient({
             id="send-test-digest-btn"
             variant="outline"
             size="sm"
-            className="shrink-0 border-black/10 text-[#0a0a0a] hover:bg-black/5"
+            className="shrink-0 border-[rgba(26,18,8,0.1)] text-[#1a1208] hover:bg-[rgba(26,18,8,0.05)]"
             onClick={handleSendTestDigest}
             disabled={isSendingDigest}
           >
@@ -294,20 +294,20 @@ export function SettingsClient({
       </div>
 
       {/* ─── Danger Zone ─────────────────────────────────────── */}
-      <div className="glass-card overflow-hidden border border-red-200">
-        <div className="flex items-center gap-2.5 border-b border-red-200 bg-red-50 px-6 py-4">
-          <Trash2 className="size-4 text-red-600" />
-          <span className="text-sm font-semibold text-red-700">
+      <div className="glass-card overflow-hidden border border-[#a63d2f]/20">
+        <div className="flex items-center gap-2.5 border-b border-[#a63d2f]/20 bg-[#fdf0ee] px-6 py-4">
+          <Trash2 className="size-4 text-[#a63d2f]" />
+          <span className="text-sm font-semibold text-[#a63d2f]">
             Danger Zone
           </span>
         </div>
 
         <div className={ROW_CLASS}>
           <div>
-            <p className="text-sm font-medium text-[#0a0a0a]">
+            <p className="text-sm font-medium text-[#1a1208]">
               Delete all competitors
             </p>
-            <p className="mt-0.5 text-xs text-[#9ca3af]">
+            <p className="mt-0.5 text-xs text-[#9c8570]">
               Permanently removes all competitors and their tracking history.
               This cannot be undone.
             </p>
@@ -316,7 +316,7 @@ export function SettingsClient({
             id="delete-all-competitors-btn"
             variant="outline"
             size="sm"
-            className="shrink-0 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+            className="shrink-0 border-[#a63d2f]/20 text-[#a63d2f] hover:bg-[#fdf0ee] hover:text-[#a63d2f]"
             onClick={handleDeleteAll}
             disabled={isDeletingAll}
           >

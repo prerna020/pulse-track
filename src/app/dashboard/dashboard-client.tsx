@@ -54,15 +54,15 @@ const STAT_ICONS = {
 };
 
 const URGENCY_BORDER: Record<string, string> = {
-  HIGH: "border-l-red-500",
-  MEDIUM: "border-l-amber-500",
-  LOW: "border-l-green-500",
+  HIGH: "border-l-[#a63d2f]",
+  MEDIUM: "border-l-[#c8956c]",
+  LOW: "border-l-[#6b7c3f]",
 };
 
 const URGENCY_PILL: Record<string, string> = {
-  HIGH: "bg-red-50 text-red-700 border-red-200",
-  MEDIUM: "bg-amber-50 text-amber-700 border-amber-200",
-  LOW: "bg-green-50 text-green-700 border-green-200",
+  HIGH: "bg-[#fdf0ee] text-[#a63d2f] border-[#a63d2f]/20",
+  MEDIUM: "bg-[#fdf5f0] text-[#c8956c] border-[#c8956c]/20",
+  LOW: "bg-[#f2f5ee] text-[#6b7c3f] border-[#6b7c3f]/20",
 };
 
 export function DashboardClient({ stats }: { stats: StatItem[] }) {
@@ -116,8 +116,8 @@ export function DashboardClient({ stats }: { stats: StatItem[] }) {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#0a0a0a]">Dashboard</h1>
-        <p className="mt-1 text-sm text-[#6b7280]">
+        <h1 className="text-2xl font-semibold text-[#1a1208]">Dashboard</h1>
+        <p className="mt-1 text-sm text-[#5c4a32]">
           Overview of your competitor intelligence
         </p>
       </div>
@@ -128,19 +128,19 @@ export function DashboardClient({ stats }: { stats: StatItem[] }) {
           return (
             <Card
               key={stat.title}
-              className="glass-card border-black/8 shadow-none ring-0"
+              className="glass-card border-[rgba(26,18,8,0.1)] shadow-none ring-0"
             >
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-[#6b7280]">
+                <CardTitle className="text-sm font-medium text-[#5c4a32]">
                   {stat.title}
                 </CardTitle>
-                <Icon className="size-4 text-[#9ca3af]" />
+                <Icon className="size-4 text-[#9c8570]" />
               </CardHeader>
               <CardContent>
-                <p className="text-3xl font-semibold text-[#0a0a0a]">
+                <p className="text-3xl font-semibold text-[#1a1208]">
                   {stat.value}
                 </p>
-                <p className="mt-1 text-xs text-[#9ca3af]">
+                <p className="mt-1 text-xs text-[#9c8570]">
                   {stat.description}
                 </p>
               </CardContent>
@@ -150,7 +150,7 @@ export function DashboardClient({ stats }: { stats: StatItem[] }) {
       </div>
 
       <div>
-        <h2 className="mb-4 text-lg font-semibold text-[#0a0a0a]">
+        <h2 className="mb-4 text-lg font-semibold text-[#1a1208]">
           Activity Feed
         </h2>
 
@@ -165,13 +165,13 @@ export function DashboardClient({ stats }: { stats: StatItem[] }) {
           </div>
         ) : changes.length === 0 ? (
           <div className="glass-card flex flex-col items-center justify-center py-16 text-center">
-            <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-black/5">
-              <Radar className="size-6 text-[#9ca3af]" />
+            <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-[rgba(26,18,8,0.05)]">
+              <Radar className="size-6 text-[#9c8570]" />
             </div>
-            <p className="text-sm font-medium text-[#0a0a0a]">
+            <p className="text-sm font-medium text-[#1a1208]">
               No changes detected yet
             </p>
-            <p className="mt-1 max-w-sm text-sm text-[#6b7280]">
+            <p className="mt-1 max-w-sm text-sm text-[#5c4a32]">
               Add competitors and scrape to get started.
             </p>
           </div>
@@ -194,23 +194,23 @@ export function DashboardClient({ stats }: { stats: StatItem[] }) {
       >
         <SheetContent
           side="right"
-          className="glass-card w-full overflow-y-auto border-black/8 sm:max-w-[500px]"
+          className="glass-card w-full overflow-y-auto border-[rgba(26,18,8,0.1)] sm:max-w-[500px]"
         >
           {selectedChange && (
             <>
-              <SheetHeader className="border-b border-black/8 pb-4">
+              <SheetHeader className="border-b border-[rgba(26,18,8,0.1)] pb-4">
                 <div className="flex items-center gap-3 pr-8">
                   <Avatar className="size-8 rounded-md">
                     <AvatarImage
                       src={selectedChange.competitorLogoUrl ?? undefined}
                       alt={selectedChange.competitorName}
                     />
-                    <AvatarFallback className="rounded-md bg-black/5 text-xs">
+                    <AvatarFallback className="rounded-md bg-[rgba(26,18,8,0.05)] text-xs">
                       {selectedChange.competitorName.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="min-w-0 flex-1">
-                    <SheetTitle className="text-base text-[#0a0a0a]">
+                    <SheetTitle className="text-base text-[#1a1208]">
                       {selectedChange.competitorName}
                     </SheetTitle>
                     <div className="mt-1 flex items-center gap-2">
@@ -253,7 +253,7 @@ export function DashboardClient({ stats }: { stats: StatItem[] }) {
                     selectedChange.aiAnalysis?.impact_on_you ??
                     "No analysis available."
                   }
-                  className="border-l-4 border-l-amber-400"
+                  className="border-l-4 border-l-[#c8956c]"
                 />
                 <AnalysisCard
                   title="Recommended Action"
@@ -261,27 +261,27 @@ export function DashboardClient({ stats }: { stats: StatItem[] }) {
                     selectedChange.aiAnalysis?.recommended_action ??
                     "No analysis available."
                   }
-                  className="border-l-4 border-l-[#0a0a0a] font-medium"
+                  className="border-l-4 border-l-[#1a1208] font-medium"
                 />
               </div>
 
-              <div className="border-t border-black/8 px-4 py-4">
+              <div className="border-t border-[rgba(26,18,8,0.1)] px-4 py-4">
                 <button
                   type="button"
                   onClick={() => setDiffExpanded((v) => !v)}
-                  className="flex w-full items-center justify-between text-sm font-medium text-[#0a0a0a]"
+                  className="flex w-full items-center justify-between text-sm font-medium text-[#1a1208]"
                 >
                   Raw Diff
                   {diffExpanded ? (
-                    <ChevronUp className="size-4 text-[#6b7280]" />
+                    <ChevronUp className="size-4 text-[#5c4a32]" />
                   ) : (
-                    <ChevronDown className="size-4 text-[#6b7280]" />
+                    <ChevronDown className="size-4 text-[#5c4a32]" />
                   )}
                 </button>
 
                 {diffExpanded && (
                   <div
-                    className="diff2html-wrapper mt-3 overflow-x-auto rounded-lg border border-black/8 text-xs"
+                    className="diff2html-wrapper mt-3 overflow-x-auto rounded-lg border border-[rgba(26,18,8,0.1)] text-xs"
                     dangerouslySetInnerHTML={{ __html: diffHtml }}
                   />
                 )}
@@ -322,18 +322,18 @@ function ChangeCard({
               src={change.competitorLogoUrl ?? undefined}
               alt={change.competitorName}
             />
-            <AvatarFallback className="rounded-md bg-black/5 text-[10px]">
+            <AvatarFallback className="rounded-md bg-[rgba(26,18,8,0.05)] text-[10px]">
               {initials}
             </AvatarFallback>
           </Avatar>
           {!change.isRead && (
-            <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-[#0a0a0a]" />
+            <span className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-[#1a1208]" />
           )}
         </div>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-[#0a0a0a]">
+            <span className="text-sm font-medium text-[#1a1208]">
               {change.competitorName}
             </span>
             <Badge variant="secondary" className="text-[10px]">
@@ -347,11 +347,11 @@ function ChangeCard({
             >
               {change.urgency}
             </span>
-            <span className="ml-auto text-xs text-[#9ca3af]">
+            <span className="ml-auto text-xs text-[#9c8570]">
               {timeAgo(change.detectedAt)}
             </span>
           </div>
-          <p className="mt-1.5 line-clamp-2 text-sm text-[#6b7280]">
+          <p className="mt-1.5 line-clamp-2 text-sm text-[#5c4a32]">
             {change.aiAnalysis?.what_changed ?? "Change detected"}
           </p>
         </div>
@@ -372,14 +372,14 @@ function AnalysisCard({
   return (
     <div
       className={cn(
-        "rounded-lg border border-black/8 bg-white/80 p-4",
+        "rounded-lg border border-[rgba(26,18,8,0.1)] bg-white/80 p-4",
         className
       )}
     >
-      <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-[#9ca3af]">
+      <p className="mb-1.5 text-xs font-medium uppercase tracking-wide text-[#9c8570]">
         {title}
       </p>
-      <p className="text-sm leading-relaxed text-[#0a0a0a]">{content}</p>
+      <p className="text-sm leading-relaxed text-[#1a1208]">{content}</p>
     </div>
   );
 }

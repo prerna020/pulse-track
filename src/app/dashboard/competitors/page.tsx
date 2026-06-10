@@ -160,13 +160,13 @@ export default function CompetitorsPage() {
     <div>
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-[#0a0a0a]">Competitors</h1>
-          <p className="mt-1 text-sm text-[#6b7280]">
+          <h1 className="text-2xl font-semibold text-[#1a1208]">Competitors</h1>
+          <p className="mt-1 text-sm text-[#5c4a32]">
             Track and monitor competitor websites
           </p>
         </div>
         <Button
-          className="bg-[#0a0a0a] text-white hover:bg-[#0a0a0a]/90"
+          className="bg-[#1a1208] text-white hover:bg-[#1a1208]/90"
           onClick={() => setSheetOpen(true)}
         >
           <Plus className="size-4" />
@@ -185,14 +185,14 @@ export default function CompetitorsPage() {
         </div>
       ) : competitors.length === 0 ? (
         <div className="glass-card flex flex-col items-center justify-center py-16 text-center">
-          <p className="text-sm font-medium text-[#0a0a0a]">
+          <p className="text-sm font-medium text-[#1a1208]">
             No competitors yet
           </p>
-          <p className="mt-1 text-sm text-[#6b7280]">
+          <p className="mt-1 text-sm text-[#5c4a32]">
             Add your first competitor to start monitoring changes.
           </p>
           <Button
-            className="mt-4 bg-[#0a0a0a] text-white hover:bg-[#0a0a0a]/90"
+            className="mt-4 bg-[#1a1208] text-white hover:bg-[#1a1208]/90"
             onClick={() => setSheetOpen(true)}
           >
             <Plus className="size-4" />
@@ -216,11 +216,11 @@ export default function CompetitorsPage() {
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent
           side="right"
-          className="glass-card w-full border-black/8 sm:max-w-md"
+          className="glass-card w-full border-[rgba(26,18,8,0.1)] sm:max-w-md"
         >
           <SheetHeader>
-            <SheetTitle className="text-[#0a0a0a]">Add Competitor</SheetTitle>
-            <SheetDescription className="text-[#6b7280]">
+            <SheetTitle className="text-[#1a1208]">Add Competitor</SheetTitle>
+            <SheetDescription className="text-[#5c4a32]">
               Enter competitor details and select pages to track.
             </SheetDescription>
           </SheetHeader>
@@ -228,7 +228,7 @@ export default function CompetitorsPage() {
           <form onSubmit={handleSubmit} className="flex flex-1 flex-col gap-6 px-4">
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="name" className="text-[#0a0a0a]">
+                <Label htmlFor="name" className="text-[#1a1208]">
                   Name
                 </Label>
                 <Input
@@ -236,13 +236,13 @@ export default function CompetitorsPage() {
                   placeholder="Acme Corp"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="border-black/10 bg-white/80"
+                  className="border-[rgba(26,18,8,0.1)] bg-white/80"
                   required
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="website" className="text-[#0a0a0a]">
+                <Label htmlFor="website" className="text-[#1a1208]">
                   Website URL
                 </Label>
                 <Input
@@ -250,24 +250,24 @@ export default function CompetitorsPage() {
                   placeholder="https://acme.com"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
-                  className="border-black/10 bg-white/80"
+                  className="border-[rgba(26,18,8,0.1)] bg-white/80"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label className="text-[#0a0a0a]">Pages to track</Label>
+                <Label className="text-[#1a1208]">Pages to track</Label>
                 <div className="space-y-2">
                   {ALL_PAGE_TYPES.map((pageType) => (
                     <label
                       key={pageType}
-                      className="flex items-center gap-2.5 rounded-lg border border-black/8 bg-white/60 px-3 py-2.5"
+                      className="flex items-center gap-2.5 rounded-lg border border-[rgba(26,18,8,0.1)] bg-white/60 px-3 py-2.5"
                     >
                       <Checkbox
                         checked={selectedPages.includes(pageType)}
                         onCheckedChange={() => togglePage(pageType)}
                       />
-                      <span className="text-sm text-[#0a0a0a]">
+                      <span className="text-sm text-[#1a1208]">
                         {PAGE_TYPE_LABELS[pageType]}
                       </span>
                     </label>
@@ -283,7 +283,7 @@ export default function CompetitorsPage() {
             <SheetFooter>
               <Button
                 type="submit"
-                className="w-full bg-[#0a0a0a] text-white hover:bg-[#0a0a0a]/90"
+                className="w-full bg-[#1a1208] text-white hover:bg-[#1a1208]/90"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Adding..." : "Add Competitor"}
@@ -379,7 +379,7 @@ function CompetitorCard({
   }
 
   return (
-    <Card className="glass-card border-black/8 shadow-none ring-0">
+    <Card className="glass-card border-[rgba(26,18,8,0.1)] shadow-none ring-0">
       <CardHeader className="flex flex-row items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <Avatar className="size-10 rounded-lg shrink-0">
@@ -387,12 +387,12 @@ function CompetitorCard({
               src={competitor.logoUrl ?? undefined}
               alt={competitor.name}
             />
-            <AvatarFallback className="rounded-lg bg-black/5 text-sm text-[#0a0a0a]">
+            <AvatarFallback className="rounded-lg bg-[rgba(26,18,8,0.05)] text-sm text-[#1a1208]">
               {initials}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <CardTitle className="text-base text-[#0a0a0a] truncate">
+            <CardTitle className="text-base text-[#1a1208] truncate">
               <Link
                 href={`/dashboard/competitors/${competitor.id}`}
                 className="hover:underline"
@@ -404,7 +404,7 @@ function CompetitorCard({
               href={competitor.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-0.5 flex items-center gap-1 text-xs text-[#6b7280] hover:text-[#0a0a0a]"
+              className="mt-0.5 flex items-center gap-1 text-xs text-[#5c4a32] hover:text-[#1a1208]"
             >
               {domain}
               <ExternalLink className="size-3 shrink-0" />
@@ -414,7 +414,7 @@ function CompetitorCard({
         <Button
           variant="ghost"
           size="icon-sm"
-          className="text-[#9ca3af] hover:text-red-600 shrink-0"
+          className="text-[#9c8570] hover:text-red-600 shrink-0"
           onClick={() => onDelete(competitor.id)}
         >
           <Trash2 className="size-4" />
@@ -424,17 +424,17 @@ function CompetitorCard({
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>
-            <p className="text-xs text-[#9ca3af]">Pages tracked</p>
-            <p className="font-medium text-[#0a0a0a]">{competitor.pagesCount}</p>
+            <p className="text-xs text-[#9c8570]">Pages tracked</p>
+            <p className="font-medium text-[#1a1208]">{competitor.pagesCount}</p>
           </div>
           <div>
-            <p className="text-xs text-[#9ca3af]">Last scraped</p>
-            <p className="font-medium text-[#0a0a0a]">{lastScraped}</p>
+            <p className="text-xs text-[#9c8570]">Last scraped</p>
+            <p className="font-medium text-[#1a1208]">{lastScraped}</p>
           </div>
         </div>
 
-        <div className="flex items-center justify-between rounded-lg border border-black/8 bg-white/60 px-3 py-2">
-          <span className="text-sm text-[#6b7280]">Active</span>
+        <div className="flex items-center justify-between rounded-lg border border-[rgba(26,18,8,0.1)] bg-white/60 px-3 py-2">
+          <span className="text-sm text-[#5c4a32]">Active</span>
           <Switch
             checked={competitor.isActive}
             onCheckedChange={(checked) =>
@@ -446,7 +446,7 @@ function CompetitorCard({
         <Button
           variant="outline"
           size="sm"
-          className="w-full gap-2 border-black/10 text-[#0a0a0a] hover:bg-black/5"
+          className="w-full gap-2 border-[rgba(26,18,8,0.1)] text-[#1a1208] hover:bg-[rgba(26,18,8,0.05)]"
           onClick={handleScrapeNow}
           disabled={isScraping || competitor.pages.length === 0}
           id={`scrape-btn-${competitor.id}`}

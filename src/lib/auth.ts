@@ -40,14 +40,14 @@ export const authOptions: NextAuthOptions = {
           subject: "Sign in to PulseTrack",
           html: `
             <div style="font-family: Inter, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px;">
-              <h1 style="color: #0a0a0a; font-size: 20px; margin-bottom: 8px;">Sign in to PulseTrack</h1>
-              <p style="color: #6b7280; font-size: 14px; margin-bottom: 24px;">
+              <h1 style="color: #1a1208; font-size: 20px; margin-bottom: 8px;">Sign in to PulseTrack</h1>
+              <p style="color: #5c4a32; font-size: 14px; margin-bottom: 24px;">
                 Click the button below to sign in. This link expires in 24 hours.
               </p>
-              <a href="${url}" style="display: inline-block; background: #0a0a0a; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">
+              <a href="${url}" style="display: inline-block; background: #1a1208; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;">
                 Sign in
               </a>
-              <p style="color: #9ca3af; font-size: 12px; margin-top: 24px;">
+              <p style="color: #9c8570; font-size: 12px; margin-top: 24px;">
                 If you didn't request this email, you can safely ignore it.
               </p>
             </div>
