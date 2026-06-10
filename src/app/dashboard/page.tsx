@@ -1,6 +1,4 @@
-import { Activity, AlertTriangle, Users } from "lucide-react";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DashboardClient } from "@/app/dashboard/dashboard-client";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 
@@ -40,50 +38,22 @@ export default async function DashboardPage() {
     {
       title: "Competitors Tracked",
       value: competitorsCount,
-      icon: Users,
+      icon: "users" as const,
       description: "Active monitoring targets",
     },
     {
       title: "Changes This Week",
       value: changesThisWeek,
-      icon: Activity,
+      icon: "activity" as const,
       description: "Detected page updates",
     },
     {
       title: "High Urgency",
       value: highUrgency,
-      icon: AlertTriangle,
+      icon: "alert" as const,
       description: "Critical changes flagged",
     },
   ];
 
-  return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-[#0a0a0a]">Dashboard</h1>
-        <p className="mt-1 text-sm text-[#6b7280]">
-          Overview of your competitor intelligence
-        </p>
-      </div>
-
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {stats.map((stat) => (
-          <Card key={stat.title} className="glass-card border-black/8 shadow-none ring-0">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-[#6b7280]">
-                {stat.title}
-              </CardTitle>
-              <stat.icon className="size-4 text-[#9ca3af]" />
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-semibold text-[#0a0a0a]">
-                {stat.value}
-              </p>
-              <p className="mt-1 text-xs text-[#9ca3af]">{stat.description}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
+  return <DashboardClient stats={stats} />;
 }

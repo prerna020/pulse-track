@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { analyzeChange } from "@/lib/aiAnalyzer";
+import { detectChanges } from "@/lib/changeDetector";
 import { prisma } from "@/lib/prisma";
 import { scrapeUrl } from "@/lib/scraper";
 import { getSession } from "@/lib/session";
@@ -27,7 +29,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // Fetch TrackedPage and verify ownership via competitor
   const trackedPage = await prisma.trackedPage.findFirst({
     where: {
       id: trackedPageId,
@@ -45,10 +46,13 @@ export async function POST(request: Request) {
     );
   }
 
-  // Scrape the URL
+  const previousSnapshot = await prisma.snapshot.findFirst({
+    where: { trackedPageId: trackedPage.id },
+    orderBy: { scrapedAt: "desc" },
+  });
+
   const { html, cleanText, method } = await scrapeUrl(trackedPage.url);
 
-  // Save Snapshot
   const snapshot = await prisma.snapshot.create({
     data: {
       trackedPageId: trackedPage.id,
@@ -57,14 +61,44 @@ export async function POST(request: Request) {
     },
   });
 
-  // Update lastScrapedAt on the TrackedPage
   await prisma.trackedPage.update({
     where: { id: trackedPageId },
     data: { lastScrapedAt: new Date() },
   });
 
+  let changesDetected = false;
+
+  if (previousSnapshot) {
+    const changeResult = detectChanges(
+      previousSnapshot.cleanText,
+      cleanText
+    );
+
+    if (changeResult) {
+      const aiAnalysis = await analyzeChange({
+        competitorName: trackedPage.competitor.name,
+        pageType: trackedPage.pageType,
+        added: changeResult.added,
+        removed: changeResult.removed,
+      });
+
+      await prisma.change.create({
+        data: {
+          snapshotId: snapshot.id,
+          diffText: changeResult.diffText,
+          aiAnalysis: { ...aiAnalysis },
+          urgency: aiAnalysis.urgency,
+          isRead: false,
+        },
+      });
+
+      changesDetected = true;
+    }
+  }
+
   return NextResponse.json({
     success: true,
+    changesDetected,
     snapshotId: snapshot.id,
     textLength: cleanText.length,
     method,
