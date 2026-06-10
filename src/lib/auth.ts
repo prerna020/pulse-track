@@ -63,7 +63,8 @@ export const authOptions: NextAuthOptions = {
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
+        name: { label: "Name", type: "text" }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -80,6 +81,7 @@ export const authOptions: NextAuthOptions = {
           const newUser = await prisma.user.create({
             data: {
               email: credentials.email,
+              name: credentials.name || null,
               password: hashedPassword,
             }
           });

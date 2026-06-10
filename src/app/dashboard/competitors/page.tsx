@@ -55,6 +55,7 @@ export default function CompetitorsPage() {
 
   const [name, setName] = useState("");
   const [website, setWebsite] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
   const [selectedPages, setSelectedPages] = useState<PageType[]>([
     "HOMEPAGE",
     "PRICING",
@@ -76,6 +77,7 @@ export default function CompetitorsPage() {
   function resetForm() {
     setName("");
     setWebsite("");
+    setLogoUrl("");
     setSelectedPages(["HOMEPAGE", "PRICING"]);
     setFormError("");
   }
@@ -96,7 +98,7 @@ export default function CompetitorsPage() {
     const res = await fetch("/api/competitors", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, website, pages: selectedPages }),
+      body: JSON.stringify({ name, website, logoUrl, pages: selectedPages }),
     });
 
     if (!res.ok) {
@@ -252,6 +254,19 @@ export default function CompetitorsPage() {
                   onChange={(e) => setWebsite(e.target.value)}
                   className="border-[rgba(26,18,8,0.1)] bg-white/80"
                   required
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="logoUrl" className="text-[#1a1208]">
+                  Logo URL (Optional)
+                </Label>
+                <Input
+                  id="logoUrl"
+                  placeholder="https://acme.com/logo.png"
+                  value={logoUrl}
+                  onChange={(e) => setLogoUrl(e.target.value)}
+                  className="border-[rgba(26,18,8,0.1)] bg-white/80"
                 />
               </div>
 

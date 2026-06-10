@@ -59,9 +59,10 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { name, website, pages } = body as {
+  const { name, website, logoUrl: providedLogoUrl, pages } = body as {
     name?: string;
     website?: string;
+    logoUrl?: string;
     pages?: PageType[];
   };
 
@@ -83,14 +84,14 @@ export async function POST(request: Request) {
     ? website.trim()
     : `https://${website.trim()}`;
 
-  const logoUrl = buildLogoUrl(normalizedWebsite);
+  const finalLogoUrl = providedLogoUrl?.trim() || buildLogoUrl(normalizedWebsite);
 
   const competitor = await prisma.competitor.create({
     data: {
       userId: session.user.id,
       name: name.trim(),
       website: normalizedWebsite,
-      logoUrl,
+      logoUrl: finalLogoUrl,
       pages: {
         create: pages.map((pageType) => ({
           pageType,

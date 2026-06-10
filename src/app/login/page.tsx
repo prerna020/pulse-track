@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -58,6 +59,7 @@ export default function LoginPage() {
       const result = await signIn("credentials", {
         email: email.trim(),
         password,
+        name: name.trim(),
         redirect: false,
         callbackUrl: "/dashboard",
       });
@@ -139,6 +141,22 @@ export default function LoginPage() {
                   required
                 />
               </div>
+
+              {!useMagicLink && (
+                <div className="space-y-1.5">
+                  <Label htmlFor="name" className="text-[#1a1208]">
+                    Your name (if creating a new account)
+                  </Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Jane Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="h-11 border-[rgba(26,18,8,0.1)] bg-white/80"
+                  />
+                </div>
+              )}
 
               {!useMagicLink && (
                 <div className="space-y-1.5">

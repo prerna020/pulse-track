@@ -211,7 +211,7 @@ export default function LandingPage() {
             transition={{ duration: 0.7, delay: 0.5 }}
             className="text-[18px] text-[#5c4a32] leading-[1.7] max-w-2xl mb-10"
           >
-            PulseTrack monitors competitor websites 24/7, detects changes, and uses AI to explain what it means for your business — before your competition gets ahead.
+            PulseTrack monitors competitor websites 24/7, detects changes, and uses AI to explain what it means for your business,  before your competition gets ahead.
           </motion.p>
 
           <motion.div 
@@ -269,7 +269,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-[48px] font-bold text-[#1a1208] mb-4">Your competitor intelligence, at a glance</h2>
-            <p className="text-[18px] text-[#5c4a32]">Everything you need to stay ahead — in one clean dashboard.</p>
+            <p className="text-[18px] text-[#5c4a32]">Everything you need to stay ahead in one clean dashboard.</p>
           </div>
 
           <Section>
@@ -416,10 +416,10 @@ export default function LandingPage() {
                 <Target className="w-6 h-6 text-[#c17f2a]" />
               </div>
               <h3 className="text-xl font-bold text-[#1a1208] mb-3">Add your competitors</h3>
-              <p className="text-[#5c4a32] text-[15px] leading-relaxed mb-6">Paste any competitor URL. Choose which pages to monitor — pricing, homepage, features, changelog. Takes 30 seconds.</p>
+              <p className="text-[#5c4a32] text-[15px] leading-relaxed mb-6">Paste any competitor URL. Choose which pages to monitor pricing, homepage, features, changelog. Takes 30 seconds.</p>
               
               <div className="bg-[#faf7f2] rounded-lg p-3 border border-[rgba(26,18,8,0.08)] flex items-center gap-2">
-                <div className="w-4 h-4 text-[#9c8570]">https://</div>
+                <div className="w-4 h-4 text-[#9c8570]"></div>
                 <div className="text-sm text-[#1a1208] font-mono overflow-hidden border-r-2 border-[rgba(26,18,8,0.5)] pr-1 animate-pulse">stripe.com/pricing</div>
               </div>
             </motion.div>
@@ -463,7 +463,7 @@ export default function LandingPage() {
                 <Sparkles className="w-6 h-6 text-[#c17f2a]" />
               </div>
               <h3 className="text-xl font-bold text-[#1a1208] mb-3">AI explains what matters</h3>
-              <p className="text-[#5c4a32] text-[15px] leading-relaxed mb-6">Not just 'something changed' — we tell you what changed, why it likely happened, and exactly what you should do about it.</p>
+              <p className="text-[#5c4a32] text-[15px] leading-relaxed mb-6">Not just 'something changed' we tell you what changed, why it likely happened, and exactly what you should do about it.</p>
               
               <div className="bg-[#faf7f2] rounded-lg p-3 border border-[rgba(26,18,8,0.08)] border-l-2 border-l-[#c17f2a]">
                 <div className="w-3/4 h-2 bg-[#c17f2a]/20 rounded mb-2"></div>

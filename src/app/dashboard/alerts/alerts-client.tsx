@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createTwoFilesPatch } from "diff";
 import { html as diff2htmlHtml } from "diff2html";
 import {
@@ -101,6 +101,26 @@ export function AlertsClient({
   const [selectedChange, setSelectedChange] = useState<ChangeItem | null>(null);
   const [diffExpanded, setDiffExpanded] = useState(false);
   const [isMarkingAll, setIsMarkingAll] = useState(false);
+
+  const [drawerWidth, setDrawerWidth] = useState(800);
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    if (!isDragging) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      const newWidth = window.innerWidth - e.clientX;
+      if (newWidth > 400 && newWidth < window.innerWidth - 50) {
+        setDrawerWidth(newWidth);
+      }
+    };
+    const handleMouseUp = () => setIsDragging(false);
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging]);
 
   const grouped = useMemo(() => {
     const map: Record<string, ChangeItem[]> = { HIGH: [], MEDIUM: [], LOW: [] };
@@ -266,8 +286,20 @@ export function AlertsClient({
       >
         <SheetContent
           side="right"
-          className="glass-card w-full overflow-y-auto border-[rgba(26,18,8,0.1)] sm:max-w-[500px]"
+          className="glass-card w-full overflow-y-auto border-[rgba(26,18,8,0.1)]"
+          style={{ 
+            maxWidth: `${drawerWidth}px`, 
+            width: "100%", 
+            transition: isDragging ? "none" : undefined 
+          }}
         >
+          <div
+            className="absolute left-0 top-0 z-50 h-full w-2 cursor-col-resize hover:bg-[rgba(26,18,8,0.1)] active:bg-[rgba(26,18,8,0.2)]"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setIsDragging(true);
+            }}
+          />
           {selectedChange && (
             <>
               <SheetHeader className="border-b border-[rgba(26,18,8,0.1)] pb-4">
