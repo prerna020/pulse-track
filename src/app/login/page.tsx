@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { Radar, Mail } from "lucide-react";
 
@@ -13,65 +13,50 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
   const [error, setError] = useState("");
-  const [useMagicLink, setUseMagicLink] = useState(false);
 
-  async function handleGoogleSignIn() {
+  useEffect(() => {
+    // Check for NextAuth OAuth errors in the URL
+    const params = new URLSearchParams(window.location.search);
+    const err = params.get("error");
+    if (err === "OAuthAccountNotLinked") {
+      setError("This email is already in use by a password account. Please sign in with your email and password.");
+    } else if (err) {
+      setError("Google sign in failed. Please try again.");
+    }
+  }, []);
+
+  function handleGoogleSignIn() {
     setIsLoading(true);
     setError("");
-    const result = await signIn("google", { callbackUrl: "/dashboard", redirect: false });
-    if (result?.error) {
-      setError("Google sign in failed. Ensure you have configured Google Client ID in your .env file.");
-      setIsLoading(false);
-    }
+    signIn("google", { callbackUrl: "/dashboard" });
   }
 
   async function handleEmailSignIn(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) return;
 
+    if (!password) {
+      setError("Password is required.");
+      return;
+    }
+
     setIsLoading(true);
     setError("");
 
-    if (useMagicLink) {
-      const result = await signIn("email", {
-        email: email.trim(),
-        redirect: false,
-        callbackUrl: "/dashboard",
-      });
+    const result = await signIn("credentials", {
+      email: email.trim(),
+      password,
+      name: name.trim(),
+      redirect: false,
+      callbackUrl: "/dashboard",
+    });
 
+    if (result?.error) {
+      setError(result.error);
       setIsLoading(false);
-
-      if (result?.error) {
-        setError("Failed to send magic link. Please try again.");
-        return;
-      }
-
-      setEmailSent(true);
     } else {
-      if (!password) {
-        setError("Password is required.");
-        setIsLoading(false);
-        return;
-      }
-
-      const result = await signIn("credentials", {
-        email: email.trim(),
-        password,
-        name: name.trim(),
-        redirect: false,
-        callbackUrl: "/dashboard",
-      });
-
-      if (result?.error) {
-        setError(result.error);
-        setIsLoading(false);
-      } else {
-        // Successful login via credentials will redirect via window.location by NextAuth,
-        // but since redirect is false, we manually redirect.
-        window.location.href = "/dashboard";
-      }
+      window.location.href = "/dashboard";
     }
   }
 
@@ -113,19 +98,6 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {emailSent ? (
-            <div className="rounded-lg border border-[rgba(26,18,8,0.08)] bg-white/60 p-4 text-center">
-              <p className="text-sm font-medium text-[#1a1208]">
-                Check your inbox
-              </p>
-              <p className="mt-1 text-sm text-[#5c4a32]">
-                We sent a magic link to <strong>{email}</strong>
-              </p>
-              <p className="mt-2 text-xs text-[#9c8570]">
-                (If running locally without RESEND_API_KEY, check your terminal for the link)
-              </p>
-            </div>
-          ) : (
             <form onSubmit={handleEmailSignIn} className="space-y-4">
               <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-[#1a1208]">
@@ -142,38 +114,34 @@ export default function LoginPage() {
                 />
               </div>
 
-              {!useMagicLink && (
-                <div className="space-y-1.5">
-                  <Label htmlFor="name" className="text-[#1a1208]">
-                    Your name (if creating a new account)
-                  </Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="Jane Doe"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="h-11 border-[rgba(26,18,8,0.1)] bg-white/80"
-                  />
-                </div>
-              )}
+              <div className="space-y-1.5">
+                <Label htmlFor="name" className="text-[#1a1208]">
+                  Your name (if creating a new account)
+                </Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Jane Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="h-11 border-[rgba(26,18,8,0.1)] bg-white/80"
+                />
+              </div>
 
-              {!useMagicLink && (
-                <div className="space-y-1.5">
-                  <Label htmlFor="password" className="text-[#1a1208]">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="h-11 border-[rgba(26,18,8,0.1)] bg-white/80"
-                    required={!useMagicLink}
-                  />
-                </div>
-              )}
+              <div className="space-y-1.5">
+                <Label htmlFor="password" className="text-[#1a1208]">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-11 border-[rgba(26,18,8,0.1)] bg-white/80"
+                  required
+                />
+              </div>
 
               {error && (
                 <div className="rounded-md bg-[#fdf0ee] p-3 text-sm text-[#a63d2f] border border-[#a63d2f]/20">
@@ -186,27 +154,9 @@ export default function LoginPage() {
                 className="h-11 w-full bg-[#1a1208] text-white hover:bg-[#1a1208]/90"
                 disabled={isLoading}
               >
-                {isLoading 
-                  ? (useMagicLink ? "Sending..." : "Signing in...") 
-                  : (useMagicLink ? "Send magic link" : "Sign in with Email")}
+                {isLoading ? "Signing in..." : "Sign in with Email"}
               </Button>
-
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setUseMagicLink(!useMagicLink);
-                    setError("");
-                  }}
-                  className="text-sm text-[#5c4a32] hover:text-[#1a1208] transition-colors"
-                >
-                  {useMagicLink 
-                    ? "Prefer to sign in with a password?" 
-                    : "Forgot password? Sign in with Magic Link"}
-                </button>
-              </div>
             </form>
-          )}
         </div>
       </div>
     </div>
