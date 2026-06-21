@@ -1,82 +1,143 @@
-# PulseTrack
+# PulseTrack 📈
 
-> **Your competitor intelligence, at a glance. Monitor competitors 24/7, detect changes, and use AI to understand what it means for your business.**
+> **Your competitor intelligence, at a glance.** Monitor competitor websites 24/7, track design or pricing updates, detect features, and leverage Llama 3.3 AI to understand what those changes mean for your business.
+
+---
 
 ## 📸 Overview
 
-<!-- ADD SCREENSHOT HERE -->
-![PulseTrack Dashboard Placeholder]![alt text](image.png)
+![PulseTrack Dashboard](image.png)
 
-## ✨ Features
+PulseTrack automates competitor tracking by periodically scraping pages, running smart word-level diffs, and sending the diff text to Groq AI. The AI classifies the change, assesses its urgency, and generates a business action plan.
 
-- **Automated Scraping Pipeline:** Track competitor pricing, homepages, feature lists, and changelogs automatically using ScrapingBee.
-- **AI-Powered Analysis:** Groq-powered AI instantly parses changes to explain what changed, why it matters, and how you should respond.
-- **Intelligent Activity Feed:** High, Medium, and Low urgency alerts categorized automatically to prevent noise.
-- **Visual Diff Viewer:** See the exact text additions and deletions across competitor website revisions.
-- **Magic Link & Passwordless Auth:** Seamless NextAuth integration with Google and Resend.
-- **Weekly Email Digests:** Automatically generated beautiful HTML reports summarizing competitor movements.
+---
+
+## ✨ Key Features
+
+*   **Hybrid Scraping Pipeline:** Tries fast, lightweight scraping using Axios/Cheerio first. If it detects bot-blocking or empty content, it seamlessly falls back to the ScrapingBee API.
+*   **AI-Powered Competitive Analysis:** Integrates Groq SDK (`llama-3.3-70b-versatile`) to instantly analyze text diffs, explaining *what changed*, *why it happened*, *business impact*, and a *recommended action*.
+*   **Intelligent Alert System:** Filters out noisy modifications (e.g. timestamp updates, minor styling) using a custom 2% change ratio threshold. Categorizes alerts into High, Medium, or Low urgency.
+*   **Visual Diff Viewer:** Highlights exact word-level text additions and deletions across competitor website revisions.
+*   **Passwordless Magic Link Authentication:** Uses NextAuth.js combined with Resend for secure, credential-less user authentication.
+*   **Automated Digests:** Sends beautifully formatted weekly email digests summarizing all competitor activities using Inngest and Resend.
+
+---
 
 ## 🛠 Tech Stack
 
-| Category         | Technologies Used                                                                 |
-| ---------------- | --------------------------------------------------------------------------------- |
-| **Framework**    | Next.js 14 (App Router), React, TypeScript                                      |
-| **Styling**      | Tailwind CSS, Framer Motion, GSAP, Radix UI (shadcn/ui)                         |
-| **Database**     | PostgreSQL (Neon), Prisma ORM                                                     |
-| **Auth**         | NextAuth.js (Magic Links via Resend, Google OAuth, Credentials)                   |
-| **Background**   | Inngest (Cron jobs, async scraping queues)                                        |
-| **AI & Scraping**| Groq (Llama 3 / Mixtral for analysis), ScrapingBee (Bypassing anti-bot)           |
+| Category | Technologies Used | Details |
+| :--- | :--- | :--- |
+| **Framework** | Next.js 16 (App Router), React 19, TypeScript | Modern, high-performance UI structure |
+| **Styling** | Tailwind CSS v4, Framer Motion, GSAP, Radix UI | Rich, premium interactive layouts and micro-animations |
+| **Database** | PostgreSQL (Neon serverless), Prisma ORM | Scalable cloud database with typed schema management |
+| **Authentication**| NextAuth.js | Magic Links via Resend, Google OAuth |
+| **Scraping** | Cheerio, Axios, ScrapingBee | Flexible extraction with proxy/CAPTCHA fallback |
+| **AI Insights** | Groq SDK (`llama-3.3-70b-versatile`) | Fast, high-fidelity strategic analysis |
+| **Background Jobs**| Inngest | Event-driven architecture with built-in cron triggers |
+
+---
 
 ## 🚀 Local Setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/prerna020/pulsetrack.git
-   cd pulsetrack
-   ```
+Follow these steps to run PulseTrack locally:
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+### 1. Clone the repository
+```bash
+git clone https://github.com/prerna020/pulsetrack.git
+cd pulsetrack
+```
 
-3. **Set up Environment Variables:**
-   Copy the `.env.example` file to `.env` and fill in your keys:
-   ```bash
-   cp .env.example .env
-   ```
+### 2. Install dependencies
+> [!IMPORTANT]
+> Because this project uses Next.js 16 and React 19, you **must** use the `--legacy-peer-deps` flag to install dependencies without resolution conflicts.
+```bash
+npm install --legacy-peer-deps
+```
 
-4. **Sync the Database:**
-   Push the Prisma schema to your Neon database and generate the client:
-   ```bash
-   npx prisma db push
-   npx prisma generate
-   ```
+### 3. Set up environment variables
+Copy the template `.env.example` file to `.env`:
+```bash
+cp .env.example .env
+```
+Fill in the values in `.env` (see the [Environment Variables](#-environment-variables) section below).
 
-5. **Run the Development Server:**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Sync and migrate the database
+Push the Prisma schema to your database instance and generate the typed client:
+```bash
+npx prisma db push
+npx prisma generate
+```
 
-## 🏗 Architecture (Scraping Pipeline)
-
-1. **Trigger:** Inngest cron job triggers the `scrape-all-competitors` function daily.
-2. **Fetch:** ScrapingBee is used to fetch the raw HTML of the competitor's page, bypassing CAPTCHAs and proxies.
-3. **Parse:** Cheerio extracts the human-readable text from the HTML, stripping out scripts and styles.
-4. **Diff Detection:** The text is compared against the last known version using the `diff` library.
-5. **AI Analysis:** If a significant diff is found, Groq AI analyzes the raw diff to determine the urgency and business impact.
-6. **Notification:** The change is saved to the database and an email digest/dashboard alert is generated.
-
-## ☁️ Deploy to Vercel
-
-PulseTrack is optimized for Vercel. 
-
-1. Push your code to a GitHub repository.
-2. Import the project in Vercel.
-3. Vercel will automatically detect **Next.js**. The build command `prisma generate && next build` is already configured in `package.json`.
-4. Add all required Environment Variables (see below).
-5. Click **Deploy**.
+### 5. Start the development environment
+Start the local Next.js server:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ---
-*Built with modern web standards to keep you one step ahead.*
+
+## 🔑 Environment Variables
+
+Make sure to configure the following environment variables in your `.env` file:
+
+```ini
+# Database URLs (Neon PostgreSQL)
+DATABASE_URL="postgresql://USER:PASSWORD@your-host-pooler.region.aws.neon.tech/neondb?sslmode=require"
+DIRECT_URL="postgresql://USER:PASSWORD@your-host.region.aws.neon.tech/neondb?sslmode=require" # Used for migrations
+
+# NextAuth Config
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-nextauth-secret-key"
+
+# Auth Provider Integrations (Optional)
+GOOGLE_CLIENT_ID="your-google-oauth-client-id"
+GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
+
+# Resend API (Transactional emails and magic links)
+RESEND_API_KEY="re_yourkeyhere"
+RESEND_FROM_EMAIL="PulseTrack <onboarding@resend.dev>"
+
+# Groq API Key (AI-powered diff intelligence)
+GROQ_API_KEY="gsk_yourkeyhere"
+
+# Inngest (Required for production background workers)
+# INNGEST_EVENT_KEY=""
+# INNGEST_SIGNING_KEY=""
+```
+
+---
+
+## 🏗 System Architecture & Pipeline Flow
+
+The system scraper runs asynchronously as shown below:
+
+```mermaid
+graph TD
+    A[Inngest Cron Trigger <br/> Daily at 9:00 AM] --> B[Fetch Active Tracked Pages]
+    B --> C[Scrape URL: Cheerio / Axios]
+    C -->|Content < 200 chars or blocked| D[Fallback: ScrapingBee JS Rendering]
+    C -->|Content OK| E[Compare with Latest Snapshot]
+    D --> E
+    E -->|Diff Ratio < 2%| F[Ignore Noise]
+    E -->|Diff Ratio >= 2%| G[Calculate Word-level Diff]
+    G --> H[Groq AI Llama 3.3 Analysis]
+    H --> I[Save Change & Category to DB]
+    I --> J[Trigger Realtime UI Alert & Queue Weekly Digest]
+```
+
+1.  **Trigger:** An Inngest cron job is scheduled to trigger the scraper daily at 9:00 AM (`0 9 * * *`).
+2.  **Fetch & Scrape:** The pipeline fetches active tracked pages and scrapes them. It falls back to ScrapingBee if simple cheerio fetches return thin content (< 200 chars).
+3.  **Diff Filtering:** Changes are analyzed. Any change ratio below `0.02` (2% diff compared to the previous content) is discarded as noise.
+4.  **AI Insight:** Groq's Llama 3.3 engine parses the additions/deletions, evaluates the change's business urgency (Low, Medium, High), and extracts actionable recommendations.
+5.  **Alerting:** Changes are written to the database, instantly populating the dashboard activity feed and queueing up the weekly email digest.
+
+---
+
+## ☁️ Deployment
+
+PulseTrack is pre-configured and optimized to run on **Vercel**:
+1. Add your repository to your Vercel Dashboard.
+2. Vercel automatically detects Next.js configurations. The build script is defined as `prisma generate && next build`.
+3. Add the required `.env` variables under the Vercel **Environment Variables** settings.
+4. Click **Deploy**.
